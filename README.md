@@ -1,6 +1,31 @@
-frontend-nanodegree-arcade-game
-===============================
+# Frontend Nanodegree Arcade Game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+This project is an implementation of a Frogger-style arcade game designed to run in a web browser.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+## How to Load the Game
+
+1. Clone this repository or download the code using the GitHub buttons on the repository menu. You will need the following files to run the game:
+
+  * ```index.html``` - the main HTML file
+  * ```css/style.css``` - the style file
+  * ```js/app.js``` - player & enemy objects and methods
+  * ```js/engine.js``` - the game animation engine
+  * ```js/resources.js``` - the image loader and cache
+  * ```images/*.png``` - the image files
+
+2. Open your favorite web browser
+
+3. Open the ```index.html``` file in your browser window. The game board should appear, ready for play.
+
+## How to Play
+
+In this game, you have a Player and Enemies (bugs). The **goal** of the Player is to reach the water without colliding with any of the Enemies.
+
+* The Player can move horizontally and vertically on the game grid. You control its movements using the up, down, left, and right arrow keys on your keyboard.
+* The Enemies move at varying speeds along the _road_ lanes from the left side of the game board to the right.
+* If the Player collides with an Enemy, the game is reset and the Player moves back to the _start_ square.
+* If the Player reaches the water, you **win** the game. The game will then reset for further play.
+
+#### Resources
+
+This project was created as part of the Udacity Front-end Developer Nanodegree program. You can find the template repository [here](https://github.com/udacity/frontend-nanodegree-arcade-game).
