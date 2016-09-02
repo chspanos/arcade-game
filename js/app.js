@@ -35,6 +35,8 @@ var Enemy = function() {
     // speed - determines speed (in delta pixels) of enemy across the screen
     // Range is a random integer between 100 and 500 inclusive
     this.speed = getRandomIntInclusive(100, 500);
+    // slow motion toggle - reduces speed while gem is activated
+    this.slowMotion = false;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -42,7 +44,7 @@ var Enemy = function() {
 
 // checkCollision method to check for collision with player
 // Define a collision if x and y positional coordinates of the enemy and
-// the player are withing a specified tolerance of each other
+// the player are within a specified tolerance of each other
 Enemy.prototype.checkCollision = function() {
     // tolerance set at half of a grid unit (by experimentation)
     var toleranceX = PIXELS_PER_COL / 2;
@@ -61,6 +63,23 @@ Enemy.prototype.reset = function() {
     this.x = this.col * PIXELS_PER_COL;
     this.y = this.row * PIXELS_PER_ROW - this.vertAdjust;
     this.speed = getRandomIntInclusive(100, 500);
+    if (this.slowMotion === true) {
+        this.speed = this.speed / 2;
+    }
+};
+
+// Reduce speed method
+// Activated when Player lands on a gem, this method reduces the Enemy's speed
+Enemy.prototype.reduceSpeed = function() {
+    this.slowMotion = true;
+    this.speed = this.speed / 2;
+};
+
+// Restore speed method
+// When gem is deactivated, this method restores Enemy's speed to previous value
+Enemy.prototype.restoreSpeed = function() {
+    this.slowMotion = false;
+    this.speed = this.speed * 2;
 };
 
 // Update the enemy's position, required method for game
@@ -200,6 +219,109 @@ Player.prototype.displayScore = function() {
     ctx.strokeText(this.score, textX, textY);
 }
 
+// Gem class
+var Gem = function() {
+    // Grid position - Gems only appear on the road
+    // Columns are randomly selected
+    // Valid "road" row are rows 1 to 3 inclusive (randomly selected)
+    this.col = getRandomIntInclusive(0, NUM_COLS - 1);
+    this.row = getRandomIntInclusive(1, 3);
+    // location in canvas x and y coordinates
+    this.vertAdjust = 30;
+    this.x = this.col * PIXELS_PER_COL;
+    this.y = this.row * PIXELS_PER_ROW - this.vertAdjust;
+    // State variables that control gem visibility
+    this.activated = false;
+    this.visible = true;
+    this.timer = 150;
+    // image
+    this.sprite = 'images/Gem Orange.png';
+};
+
+// Gem move method
+// Computes a new gem location on the game grid and its corresponding (x, y) canvas coordinates
+Gem.prototype.move = function() {
+    // Randomly select new col & row
+    this.col = getRandomIntInclusive(0, NUM_COLS - 1);
+    this.row = getRandomIntInclusive(1, 3);
+    // location in canvas x and y coordinates
+    this.x = this.col * PIXELS_PER_COL;
+    this.y = this.row * PIXELS_PER_ROW - this.vertAdjust;
+};
+
+// Gem method to check for player contact
+// If touched, it activates and deactivates gem powers
+Gem.prototype.checkTouch = function() {
+      if ((this.visible === true) && (this.activated === false)) {
+          // check for player contact
+          if ((this.row === player.row) && (this.col === player.col)) {
+              this.activate();
+          }
+      }
+      else {
+          // check countdown timer and deactivate if at 0
+          if ((this.activated === true) && (this.timer === 0)) {
+                this.deactivate();
+          }
+      }
+};
+
+// Gem activate method
+// If the Player touches the gem, it should change color
+// For the next 200 cycles, the gem remains on screen and all Enemies move in slow motion
+Gem.prototype.activate = function() {
+    // activate the gem
+    this.activated = true;
+    // change gem color
+    this.sprite = 'images/Gem Blue.png';
+    // set timer for 50 cycles
+    this.timer = 200;
+    // activate Enemy slow motion
+    allEnemies.forEach(function(enemy) {
+        enemy.reduceSpeed();
+    });
+};
+
+// Gem deactivate method
+Gem.prototype.deactivate = function() {
+    // deactivate the gem
+    this.activated = false;
+    // change gem color back
+    this.sprite = 'images/Gem Orange.png'
+    // deactivate Enemy slow motion
+    allEnemies.forEach(function(enemy) {
+        enemy.restoreSpeed();
+    });
+};
+
+// Gem update method
+Gem.prototype.update = function() {
+    // check if player has landed on the gem and process gem activation
+    this.checkTouch();
+    // monitor timer and update status
+    if (this.timer === 0) {
+        // toggle visibility
+        this.visible = !this.visible;
+        // if now visible, move gem to new location
+        if (this.visible === true) {
+            this.move();
+        }
+        // reset timer
+        this.timer = getRandomIntInclusive(100, 200);
+    }
+    else {
+        // decrement countdown timer
+        this.timer -= 1;
+    }
+};
+
+// Draw the gem on the screen
+Gem.prototype.render = function() {
+    if (this.visible === true) {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+};
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
@@ -218,6 +340,9 @@ loadEnemies();
 
 // Place the player object in a variable called player
 var player = new Player();
+
+// instantiate a gem object
+var gem = new Gem();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
