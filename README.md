@@ -26,6 +26,8 @@ In this game, you have a Player and Enemies (bugs). The **goal** of the Player i
 * If the Player collides with an Enemy, the Player moves back to the _start_ square and is penalized 10 points.
 * Every time the Player reaches the water, you score an additional 100 points.  The Player will then move back to the _start_ square for further play.
 * Your score is displayed in the upper right hand corner of the screen. (Note: The score will never drop below 0, no matter how many collisions the Player has.)
+* ORANGE _Power Up_ gems will appear randomly on the _road_ lanes. The Player can activate the gem by stepping on it. Once activated, the gem will turn BLUE and all Enemies will move at reduced speed, until the gem disappears.
+* You can restart the game at any time by refreshing your browser window.
 
 #### Resources
 
