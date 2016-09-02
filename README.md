@@ -23,8 +23,8 @@ In this game, you have a Player and Enemies (bugs). The **goal** of the Player i
 
 * The Player can move horizontally and vertically on the game grid. You control its movements using the up, down, left, and right arrow keys on your keyboard.
 * The Enemies move at varying speeds along the _road_ lanes from the left side of the game board to the right.
-* If the Player collides with an Enemy, the game is reset and the Player moves back to the _start_ square.
-* If the Player reaches the water, you **win** the game. The game will then reset for further play.
+* If the Player collides with an Enemy, the Player moves back to the _start_ square.
+* Every time the Player reaches the water, you score an additional 100 points. Your score is displayed in the upper right hand corner of the screen. The Player will then move back to the _start_ square for further play.
 
 #### Resources
 

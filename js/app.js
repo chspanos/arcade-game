@@ -42,28 +42,25 @@ var Enemy = function() {
 
 // checkCollision method to check for collision with player
 // Define a collision if x and y positional coordinates of the enemy and
-// the player are less than the specified tolerance of each other
+// the player are withing a specified tolerance of each other
 Enemy.prototype.checkCollision = function() {
     // tolerance set at half of a grid unit (by experimentation)
     var toleranceX = PIXELS_PER_COL / 2;
     var toleranceY = PIXELS_PER_ROW / 2;
     if ((Math.abs(this.x - player.x) <= toleranceX) && (Math.abs(this.y - player.y) <= toleranceY)) {
         // flag collision
-        console.log("Enemy at position "+this.x+","+this.y);
-        console.log("Player at position "+player.x+","+player.y)
-        console.log("Collision detected");
         player.collision();
     }
 };
 
-// Reset method - Recomputes an enemy starting position
+// Reset method - Recomputes an enemy starting position and speed.
 // Called to reset an enemy that has gone off the right side of the grid
 Enemy.prototype.reset = function() {
     this.col = getRandomIntInclusive(-5, -1);
     this.row = getRandomIntInclusive(1, 3);
     this.x = this.col * PIXELS_PER_COL;
     this.y = this.row * PIXELS_PER_ROW - this.vertAdjust;
-    //console.log("Reset enemy to col "+this.col+", row "+this.row+" with speed "+this.speed);
+    this.speed = getRandomIntInclusive(100, 500);
 };
 
 // Update the enemy's position, required method for game
@@ -104,6 +101,8 @@ var Player = function() {
     this.state = 'READY';
     // The image/sprite for our player
     this.sprite = 'images/char-boy.png'
+    // score
+    this.score = 0;
 };
 
 // Flag collision method
@@ -119,13 +118,11 @@ Player.prototype.reset = function() {
     this.row = 5;
     // reset state
     this.state = 'READY';
-    console.log("Reset player position");
 };
 
-// Processes input keystrokes to determine players new position
+// Processes input keystrokes to determine player's new position
 // Note: if you attempt to move player off grid, input is ignored
 Player.prototype.handleInput = function(input) {
-    console.log("Processing keystroke");
     switch (input) {
         case 'left':
             // attempt to move 1 col to the left
@@ -169,7 +166,8 @@ Player.prototype.update = function() {
     // if we reach the water (row = 0), then we have WON
     if (this.row === 0) {
         this.state = 'WON';
-        console.log("You WON!!!!!!");
+        // increment score
+        this.score += 100;
     }
 };
 
@@ -177,6 +175,23 @@ Player.prototype.update = function() {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+// Display player score on the screen
+Player.prototype.displayScore = function() {
+    // display the star symbol
+    var starX = (NUM_COLS - 1) * PIXELS_PER_COL;
+    var starY = 0;
+    ctx.drawImage(Resources.get('images/Star.png'), starX ,starY);
+    // display the score centered on the star
+    var textX = starX + (PIXELS_PER_COL / 2);
+    var textY = starY + (PIXELS_PER_ROW *1.32);
+    ctx.font = '18pt Impact';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'white';
+    ctx.fillText(this.score, textX, textY);
+    ctx.strokeStyle = 'black';
+    ctx.strokeText(this.score, textX, textY);
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -190,7 +205,6 @@ function loadEnemies() {
         var enemy = new Enemy();
         // Add new enemy to array
         allEnemies.push(enemy);
-        console.log("allEnemies["+i+"] is in col "+enemy.col+", row "+enemy.row+" with speed "+enemy.speed);
     }
 }
 loadEnemies();
