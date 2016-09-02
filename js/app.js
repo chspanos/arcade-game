@@ -100,7 +100,7 @@ var Player = function() {
     const allowedStates = ['RESET', 'READY', 'WON'];
     this.state = 'READY';
     // The image/sprite for our player
-    this.sprite = 'images/char-boy.png'
+    this.sprite = 'images/char-horn-girl.png'
     // score
     this.score = 0;
 };
@@ -109,6 +109,13 @@ var Player = function() {
 Player.prototype.collision = function() {
     // set flag to reset
     this.state = 'RESET';
+    // lose score points
+    if (this.score <= 10) {
+        this.score = 0;
+    }
+    else {
+        this.score -= 10;
+    }
 };
 
 // Reset method - resets the player back to the start state
