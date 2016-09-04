@@ -3,12 +3,12 @@
 // in one place.
 // Well, technically I have to change them in two places, since these constants
 // are also used in engine.js. But I could change engine.js to use these as well.
-const NUM_COLS = 5;
-const NUM_ROWS = 6;
-const PIXELS_PER_COL = 101;
-const PIXELS_PER_ROW = 83;
-const MAX_X = 505;
-const MAX_Y = 606;
+var NUM_COLS = 5;
+var NUM_ROWS = 6;
+var PIXELS_PER_COL = 101;
+var PIXELS_PER_ROW = 83;
+var MAX_X = 505;
+var MAX_Y = 606;
 
 // Returns a random integer between min (included) and max (included)
 // Using Math.round() will give you a non-uniform distribution!
@@ -116,10 +116,10 @@ var Player = function() {
     this.x = this.col * PIXELS_PER_COL;
     this.y = this.row * PIXELS_PER_ROW - this.vertAdjust;
     // State - holds state type
-    const allowedStates = ['RESET', 'READY', 'WON'];
-    this.state = 'READY';
+    var allowedStates = ['Reset', 'Ready', 'Won'];
+    this.state = 'Ready';
     // The image/sprite for our player
-    this.sprite = 'images/char-horn-girl.png'
+    this.sprite = 'images/char-horn-girl.png';
     // score
     this.score = 0;
 };
@@ -127,12 +127,11 @@ var Player = function() {
 // Flag collision method
 Player.prototype.collision = function() {
     // set flag to reset
-    this.state = 'RESET';
+    this.state = 'Reset';
     // lose score points
     if (this.score <= 10) {
         this.score = 0;
-    }
-    else {
+    } else {
         this.score -= 10;
     }
 };
@@ -143,10 +142,10 @@ Player.prototype.reset = function() {
     this.col = 2;
     this.row = 5;
     // reset state
-    this.state = 'READY';
+    this.state = 'Ready';
 };
 
-// Processes input keystrokes to determine player's new position
+// Processes input keystrokes to determine player's new position in the game grid
 // Note: if you attempt to move player off grid, input is ignored
 Player.prototype.handleInput = function(input) {
     switch (input) {
@@ -173,6 +172,7 @@ Player.prototype.handleInput = function(input) {
             if (this.row !== (NUM_ROWS - 1)) {
                 this.row += 1;
             }
+            break;
         default:
             // invalid input, do nothing
     }
@@ -183,7 +183,7 @@ Player.prototype.handleInput = function(input) {
 // the grid. A collision occurs if the square is occupied by an enemy.
 Player.prototype.update = function() {
     // if collision detected or game won, then reset col and row
-    if ((this.state === 'RESET') || (this.state === 'WON')) {
+    if ((this.state === 'Reset') || (this.state === 'Won')) {
         this.reset();
     }
     // Compute player's new position based on col and row
@@ -191,7 +191,7 @@ Player.prototype.update = function() {
     this.y = this.row * PIXELS_PER_ROW - this.vertAdjust;
     // if we reach the water (row = 0), then we have WON
     if (this.row === 0) {
-        this.state = 'WON';
+        this.state = 'Won';
         // increment score
         this.score += 100;
     }
@@ -217,7 +217,7 @@ Player.prototype.displayScore = function() {
     ctx.fillText(this.score, textX, textY);
     ctx.strokeStyle = 'black';
     ctx.strokeText(this.score, textX, textY);
-}
+};
 
 // Gem class
 var Gem = function() {
@@ -250,19 +250,12 @@ Gem.prototype.move = function() {
 };
 
 // Gem method to check for player contact
-// If touched, it activates and deactivates gem powers
+// If touched, it activates and deactivates gem power-ups
 Gem.prototype.checkTouch = function() {
-      if ((this.visible === true) && (this.activated === false)) {
-          // check for player contact
-          if ((this.row === player.row) && (this.col === player.col)) {
-              this.activate();
-          }
-      }
-      else {
-          // check countdown timer and deactivate if at 0
-          if ((this.activated === true) && (this.timer === 0)) {
-                this.deactivate();
-          }
+      if ((this.visible === true) && (this.activated === false) && (this.row === player.row) && (this.col === player.col)) {
+          this.activate();
+      } else if ((this.activated === true) && (this.timer === 0)) {
+          this.deactivate();
       }
 };
 
@@ -274,7 +267,7 @@ Gem.prototype.activate = function() {
     this.activated = true;
     // change gem color
     this.sprite = 'images/Gem Blue.png';
-    // set timer for 50 cycles
+    // reset timer
     this.timer = 200;
     // activate Enemy slow motion
     allEnemies.forEach(function(enemy) {
@@ -287,7 +280,7 @@ Gem.prototype.deactivate = function() {
     // deactivate the gem
     this.activated = false;
     // change gem color back
-    this.sprite = 'images/Gem Orange.png'
+    this.sprite = 'images/Gem Orange.png';
     // deactivate Enemy slow motion
     allEnemies.forEach(function(enemy) {
         enemy.restoreSpeed();
@@ -308,8 +301,7 @@ Gem.prototype.update = function() {
         }
         // reset timer
         this.timer = getRandomIntInclusive(100, 200);
-    }
-    else {
+    } else {
         // decrement countdown timer
         this.timer -= 1;
     }
