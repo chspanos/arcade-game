@@ -319,8 +319,7 @@ Gem.prototype.render = function() {
 var allEnemies = [];
 
 // generate new enemies and add to enemy array
-function loadEnemies() {
-    var numEnemies = 5;
+function loadEnemies(numEnemies) {
     for (var i = 0; i < numEnemies; i++) {
         // Create an enemy bug
         var enemy = new Enemy();
@@ -328,7 +327,7 @@ function loadEnemies() {
         allEnemies.push(enemy);
     }
 }
-loadEnemies();
+loadEnemies(5);
 
 // Place the player object in a variable called player
 var player = new Player();
