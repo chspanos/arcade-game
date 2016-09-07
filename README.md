@@ -17,7 +17,7 @@ For more detailed instructions on this project, check out this Udacity course [g
 
 ## How to Load the Game
 
-1. A ready-to-run version of this game can be found on my arcade project web page. Click [here](https://chspanos.github.io/frontend-nanodegree-arcade-game) to play the game.
+1. A ready-to-run version of this game can be found on my arcade project web page. Click [here](https://chspanos.github.io/arcade-game) to play the game.
 
 If you want to download your own version of the game, follow these directions:
 
