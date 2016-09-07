@@ -2,7 +2,24 @@
 
 This project is an implementation of a Frogger-style arcade game designed to run in a web browser.
 
+## Project Motivation
+
+This arcade game was created as part of the Udacity Front-End Web Developer nanodegree. To implement this project, I employed object-oriented JavaScript to create the Player and Enemy class objects and to code all the methods needed to implement their behavior. A game engine and art assets were provided as part of the start-up package.
+
+In addition to coding the basic game functionality, I added a couple of enhancements:
+
+* A score feature - Points are awarded whenever the Player successfully reaches the water. Points are also deducted whenever the Player collides with an Enemy.
+* A _Gem Power-Up_ feature - Whenever the Player lands on a Gem, the Gem object changes color and all Enemy objects run at half speed for a short period of time thereafter.
+
+These enhancements were also implemented using JavaScript object-oriented programming techniques.
+
+For more detailed instructions on this project, check out this Udacity course [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+
 ## How to Load the Game
+
+1. A ready-to-run version of this game can be found on my arcade project web page. Click [here](https://chspanos.github.io/frontend-nanodegree-arcade-game) to play the game.
+
+If you want to download your own version of the game, follow these directions:
 
 1. Clone this repository or download the code using the GitHub buttons on the repository menu. You will need the following files to run the game:
 
@@ -31,4 +48,4 @@ In this game, you have a Player and Enemies (bugs). The **goal** of the Player i
 
 #### Resources
 
-This project was created as part of the Udacity Front-end Developer Nanodegree program. You can find the template repository [here](https://github.com/udacity/frontend-nanodegree-arcade-game).
+This project was created as part of the Udacity Front-end Web Developer Nanodegree program. You can find the template repository [here](https://github.com/udacity/frontend-nanodegree-arcade-game).
